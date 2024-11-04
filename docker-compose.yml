@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - db
+      - redis
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "4000:5000"
     restart: "no"
@@ -19,5 +22,8 @@ services:
       POSTGRES_DB: "cloud_db"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "1234"
-    restart: "no"
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
 

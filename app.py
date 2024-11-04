@@ -1,4 +1,7 @@
+import os
+
 from flask import Flask, request, jsonify
+from flask_caching import Cache
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -6,6 +9,14 @@ app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:1234@db:5432/cloud_db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+app.config['CACHE_TYPE'] = 'redis'
+app.config['CACHE_REDIS_HOST'] = os.getenv("REDIS_HOST", "localhost")
+app.config['CACHE_REDIS_PORT'] = 6379
+app.config['CACHE_REDIS_DB'] = 0
+app.config['CACHE_REDIS_URL'] = f"redis://{app.config['CACHE_REDIS_HOST']}:{app.config['CACHE_REDIS_PORT']}/0"
+
+cache = Cache(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -18,6 +29,12 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+@app.route("/data")
+@cache.cached(timeout=60)
+def get_data():
+    return jsonify({"data": "This is the data"})
 
 
 @app.route("/users", methods=["POST"])
@@ -67,6 +84,24 @@ def delete_user(id):
     db.session.commit()
 
     return jsonify({'message': 'User deleted successfully'})
+
+
+@app.route("/users/<int:id>", methods=["GET"])
+@cache.cached(timeout=120, key_prefix="user_data")
+def get_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({'message': 'User does not exist'}), 404
+
+    user_data = {'id': user.id, 'username': user.username, 'email': user.email}
+    return jsonify(user_data)
+
+
+@app.route("/clean_cache/<int:id>")
+def clean_cache(id):
+    cache.delete(f"user_data::{id}")
+
+    return jsonify({'message': f'Cache for user {id} cleared'})
 
 
 @app.route('/')
