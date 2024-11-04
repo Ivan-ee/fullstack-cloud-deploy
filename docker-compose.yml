@@ -1,0 +1,15 @@
+services:
+  app:
+    container_name: cloud4
+    build:
+      dockerfile: Dockerfile
+  db:
+    image: postgres:16-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "authrestdb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "0000"
+
