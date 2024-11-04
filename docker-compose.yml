@@ -1,15 +1,19 @@
+version: '3'
+
 services:
-  app:
-    container_name: cloud4
+  web:
+    container_name: flask_app
     build:
       dockerfile: Dockerfile
+    depends_on:
+      - db
   db:
     image: postgres:16-alpine
     container_name: postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "authrestdb"
+      POSTGRES_DB: "cloud_db"
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "0000"
+      POSTGRES_PASSWORD: "1234"
 
