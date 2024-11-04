@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -16,6 +16,55 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+@app.route("/users", methods=["POST"])
+def create_user():
+    data = request.get_json()
+    new_user = User(username=data["username"], email=data["email"])
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'})
+
+
+@app.route("/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
+
+    user_list = [{'id': user.id, 'username': user.username, 'email': user.email} for user in users]
+
+    return jsonify({'users': user_list})
+
+
+@app.route("/users/<int:id>", methods=["PUT"])
+def update_user(id):
+    data = request.get_json()
+
+    user = User.query.get(id)
+
+    if not user:
+        return jsonify({'message': 'User does not exist'}), 404
+
+    user.username = data["username"]
+    user.email = data["email"]
+
+    db.session.commit()
+
+    return jsonify({'message': 'User updated successfully'})
+
+
+@app.route("/users/<int:id>", methods=["DELETE"])
+def delete_user(id):
+    user = User.query.get(id)
+
+    if not user:
+        return jsonify({'message': 'User does not exist'}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User deleted successfully'})
 
 
 @app.route('/')
