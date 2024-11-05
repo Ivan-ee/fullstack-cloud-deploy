@@ -6,7 +6,7 @@ COPY . /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt --index-url https://pypi.mirrors.ustc.edu.cn/simple/
+RUN pip install --no-cache-dir -r requirements.txt --index-url https://pypi.tuna.tsinghua.edu.cn/simple/
 
 #RUN python -m unittest
 
