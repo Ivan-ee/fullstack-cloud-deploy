@@ -6,7 +6,7 @@ COPY . /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --timeout 120
 
 #RUN python -m unittest
 
