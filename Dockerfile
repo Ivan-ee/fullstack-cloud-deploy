@@ -6,7 +6,7 @@ COPY . /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt --index-url https://mirrors.aliyun.com/pypi/simple/
+RUN pip install --no-cache-dir -r requirements.txt --index-url https://mirrors.aliyun.com/pypi/simple/ --default-timeout=100
 
 #RUN python -m unittest
 
