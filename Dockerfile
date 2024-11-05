@@ -2,20 +2,20 @@ FROM python:3.9-slim AS builder
 
 WORKDIR /app
 
-COPY . /app
+# Установка pipenv
+RUN pip install --no-cache-dir pipenv
 
+# Копирование requirements.txt и создание Pipfile на его основе
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt --default-timeout=100 future
+# Создание Pipfile.lock и установка зависимостей
+RUN pipenv install --requirements requirements.txt
 
-#RUN python -m unittest
+# Копирование всех файлов приложения
+COPY . /app
 
-FROM builder
+# Установка рабочей директории
+WORKDIR /app
 
-WORKDIR /build
-
-COPY --from=builder /app /build
-
-EXPOSE 5000
-
-CMD ["python", "app.py"]
+# Установка команды запуска через pipenv
+CMD ["pipenv", "run", "python", "app.py"]
