@@ -1,10 +1,12 @@
-FROM python:3.9-slim as builder
+FROM python:3.9-slim AS builder
 
 WORKDIR /app
 
 COPY . /app
 
 COPY requirements.txt .
+
+CMD ["pip", "--version"]
 
 RUN pip install --no-cache-dir -r requirements.txt
 
