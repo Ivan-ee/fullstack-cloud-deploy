@@ -24,6 +24,7 @@ services:
       POSTGRES_PASSWORD: "1234"
   redis:
     image: "redis:alpine"
+    container_name: redis
     ports:
       - "6379:6379"
 

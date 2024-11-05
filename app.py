@@ -5,14 +5,20 @@ from flask_caching import Cache
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from dotenv import load_dotenv
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:1234@db:5432/cloud_db"
+app.config["SQLALCHEMY_DATABASE_URI"] = \
+    f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT', 5432)}/{os.getenv('POSTGRES_DB')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config['CACHE_TYPE'] = 'redis'
-app.config['CACHE_REDIS_HOST'] = os.getenv("REDIS_HOST", "localhost")
-app.config['CACHE_REDIS_PORT'] = 6379
+app.config['CACHE_REDIS_HOST'] = os.getenv("REDIS_HOST")
+app.config['CACHE_REDIS_PORT'] = os.getenv("REDIS_PORT", 6379)
 app.config['CACHE_REDIS_DB'] = 0
 app.config['CACHE_REDIS_URL'] = f"redis://{app.config['CACHE_REDIS_HOST']}:{app.config['CACHE_REDIS_PORT']}/0"
 
@@ -34,7 +40,7 @@ class User(db.Model):
 @app.route("/data")
 @cache.cached(timeout=60)
 def get_data():
-    return jsonify({"data": "This is the data"})
+    return jsonify({"data": "This is1 the data"})
 
 
 @app.route("/users", methods=["POST"])
@@ -112,3 +118,4 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+
