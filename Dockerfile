@@ -6,8 +6,6 @@ COPY . /app
 
 COPY requirements.txt .
 
-CMD ["pip", "--version"]
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 #RUN python -m unittest
