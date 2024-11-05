@@ -11,7 +11,7 @@ build-job:
 test-job:
   stage: test
   script:
-    - docker run --rm flask_app_image -m unittest -s -v
+    - docker run --rm flask_app_image unittest -s -v
 
 deploy-job:
   stage: deploy
