@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from dotenv import load_dotenv
+
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
@@ -38,9 +39,9 @@ class User(db.Model):
 
 
 @app.route("/data")
-@cache.cached(timeout=60)
+@cache.cached(timeout=20)
 def get_data():
-    return jsonify({"data": "This is1 the data"})
+    return jsonify({"data": "This is the data"})
 
 
 @app.route("/users", methods=["POST"])
@@ -117,5 +118,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
-
+    app.run(host='0.0.0.0', debug=True)

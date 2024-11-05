@@ -6,4 +6,7 @@ requirements:
 
 run-local:
 	docker-compose -f docker-compose.dev.yml up -d
-	flask run --host=0.0.0.0 --port=${APP_PORT}
+	flask run --debug --port=${APP_PORT}
+
+test:
+	python -m unittest
