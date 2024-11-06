@@ -7,7 +7,7 @@ class Main(unittest.TestCase):
         with app.test_client() as client:
             response = client.get('/')
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.data, b'Hello!, Docker!')
+            self.assertEqual(response.data, b'Hello, Docker!')
 
     def test_get_data(self):
         with app.test_client() as client:
