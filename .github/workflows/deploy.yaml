@@ -21,8 +21,14 @@ jobs:
       - name: Build Docker image
         run: docker build -t flask-test-app .
 
-      - name: Run tests
-        run: docker run --rm flask-test-app
+      - name: Run container
+        run: docker run -d --name flask-test-app-container flask-test-app --rm
+
+      - name: Wait 20 seconds
+        run: sleep 20
+
+      - name: Stop container
+        run: docker stop flask-test-app-container
 
 #  deploy:
 #    runs-on: ubuntu-latest
