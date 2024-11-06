@@ -43,5 +43,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            docker pull "${{ secrets.DOCKER_USERNAME }}/flask-app:latest"
+            docker pull "ivanee/flask-app:latest"
             docker-compose up -d
