@@ -10,3 +10,8 @@ run-local:
 
 test:
 	python -m unittest
+
+first-migration:
+	docker exec -it $(CONTAINER_ID) flask db init
+	docker exec -it $(CONTAINER_ID) flask db migrate -m "Initial migration"
+	docker exec -it $(CONTAINER_ID) flask db upgrade
