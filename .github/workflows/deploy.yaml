@@ -22,7 +22,7 @@ jobs:
         run: docker build -t flask-test-app .
 
       - name: Run container
-        run: docker run -d --name flask-test-app-container flask-test-app --rm
+        run: docker run -d --name flask-test-app-container flask-test-app
 
       - name: Wait 20 seconds
         run: sleep 20
