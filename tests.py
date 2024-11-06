@@ -16,3 +16,8 @@ class Main(unittest.TestCase):
 
             response_data = response.get_json().get("data")
             self.assertEqual(response_data, "This is the data")
+
+    def test_404(self):
+        with app.test_client() as client:
+            response = client.get('/page_404')
+            self.assertEqual(response.status_code, 404)
