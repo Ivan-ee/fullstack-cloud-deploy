@@ -12,7 +12,7 @@ services:
       - POSTGRES_HOST=${POSTGRES_HOST}
     deploy:
       replicas: 3
-    restart: "no"
+    restart: "always"
   nginx:
     image: nginx:latest
     volumes:
@@ -30,6 +30,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: "always"
   redis:
     image: "redis:alpine"
     container_name: redis
@@ -38,3 +39,4 @@ services:
     environment:
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
+    restart: "always"
