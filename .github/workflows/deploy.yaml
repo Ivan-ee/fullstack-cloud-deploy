@@ -44,4 +44,5 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd fullstack-cloud-deploy
+            git clone
             docker-compose up -d --build web
