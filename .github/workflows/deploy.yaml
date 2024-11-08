@@ -44,5 +44,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd fullstack-cloud-deploy
+            docker pull "${{ secrets.DOCKER_USERNAME }}/flask-app:latest"
             git pull
             docker-compose up -d --build web
