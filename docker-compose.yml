@@ -2,8 +2,7 @@ version: '3'
 
 services:
   web:
-    build:
-      dockerfile: Dockerfile
+    image: "ivanee/flask-app:latest"
     depends_on:
       - db
       - redis
