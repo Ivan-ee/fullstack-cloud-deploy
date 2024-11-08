@@ -14,5 +14,8 @@ stop-dev:
 run-local:
 	docker-compose -f docker-compose.local.yml --env-file .env.local up --build web
 
+stop-local:
+	docker-compose stop
+
 test:
 	python -m unittest
