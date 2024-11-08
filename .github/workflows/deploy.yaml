@@ -44,3 +44,5 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd flask_app
+            touch text.txt
+            echo "Deployment completed on $(date)" > text.txt
