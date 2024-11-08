@@ -43,6 +43,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd flask_app
-            touch text.txt
-            echo "Deployment completed on $(date)" > text.txt
+            cd fullstack-cloud-deploy
+            docker-compose up -d --build web
