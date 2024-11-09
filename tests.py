@@ -15,7 +15,7 @@ class Main(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
 
             response_data = response.get_json().get("data")
-            self.assertEqual(response_data, "This is the data")
+            self.assertEqual(response_data, "This1 is the data")
 
     def test_404(self):
         with app.test_client() as client:
