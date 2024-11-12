@@ -46,6 +46,7 @@ services:
       - VIRTUAL_HOST=smirnowwwivan.ru
       - LETSENCRYPT_HOST=smirnowwwivan.ru
       - LETSENCRYPT_EMAIL=smirnowwwivan@mail.ru
+      - DEFAULT_EMAIL=smirnowwwivan@mail.ru
     env_file:
       - .env
     depends_on:
