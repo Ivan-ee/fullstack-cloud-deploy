@@ -6,8 +6,6 @@ services:
     depends_on:
       - db
       - redis
-      - nginx-proxy
-      - acme-companion
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - POSTGRES_HOST=${POSTGRES_HOST}
@@ -15,15 +13,13 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PORT=${POSTGRES_PORT}
-      - VIRTUAL_HOST=smirnowwwivan.ru
-      - LETSENCRYPT_HOST=smirnowwwivan.ru
-      - LETSENCRYPT_EMAIL=smirnowwwivan@mail.ru
     env_file:
       - .env
     deploy:
       replicas: 3
     restart: "always"
   nginx-proxy:
+    container_name: nginx-proxy
     image: nginxproxy/nginx-proxy
     ports:
       - "80:80"
@@ -33,8 +29,11 @@ services:
       - certs:/etc/nginx/certs
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
+    depends_on:
+      - web
 
   acme-companion:
+    container_name: acme-companion
     image: nginxproxy/acme-companion
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -44,6 +43,13 @@ services:
       - acme:/etc/acme.sh
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
+      - VIRTUAL_HOST=smirnowwwivan.ru
+      - LETSENCRYPT_HOST=smirnowwwivan.ru
+      - LETSENCRYPT_EMAIL=smirnowwwivan@mail.ru
+    env_file:
+      - .env
+    depends_on:
+      - nginx-proxy
 
   db:
     image: postgres:16-alpine
@@ -68,7 +74,10 @@ services:
     restart: "always"
 
 volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
   certs:
-  vhost:
   html:
+  vhost:
   acme:
