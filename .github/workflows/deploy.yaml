@@ -46,4 +46,4 @@ jobs:
             cd fullstack-cloud-deploy
             docker-compose pull web
             git pull
-            docker-compose up -d --build web acme-companion
+            docker-compose up -d --build web 

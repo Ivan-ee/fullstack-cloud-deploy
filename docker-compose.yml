@@ -13,44 +13,40 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PORT=${POSTGRES_PORT}
+      - VIRTUAL_HOST=smirnowwwivan.ru
+      - LETSENCRYPT_HOST=smirnowwwivan.ru
     env_file:
       - .env
     deploy:
       replicas: 3
     restart: "always"
-  nginx-proxy:
-    container_name: nginx-proxy
+
+  nginx:
+    container_name: nginx
     image: nginxproxy/nginx-proxy
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-    depends_on:
-      - web
+      - /var/docker/nginx/html:/usr/share/nginx/html
+      - /var/docker/nginx/certs:/etc/nginx/certs
+      - /var/docker/nginx/vhost:/etc/nginx/vhost.d
 
-  acme-companion:
-    container_name: acme-companion
-    image: nginxproxy/acme-companion
+  letsencrypt-companion:
+    container_name: letsencrypt-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/docker/nginx/acme:/etc/acme.sh
+      - /var/docker/nginx/html:/usr/share/nginx/html
+      - /var/docker/nginx/certs:/etc/nginx/certs
+      - /var/docker/nginx/vhost:/etc/nginx/vhost.d
     environment:
-      - NGINX_PROXY_CONTAINER=nginx-proxy
-      - VIRTUAL_HOST=smirnowwwivan.ru
-      - LETSENCRYPT_HOST=smirnowwwivan.ru
-      - LETSENCRYPT_EMAIL=smirnowwwivan@mail.ru
-      - DEFAULT_EMAIL=smirnowwwivan@mail.ru
-    env_file:
-      - .env
-    depends_on:
-      - nginx-proxy
+      DEFAULT_EMAIL: smirnowwwivan@mail.ru
 
   db:
     image: postgres:16-alpine
@@ -74,11 +70,3 @@ services:
       REDIS_PORT: ${REDIS_PORT}
     restart: "always"
 
-volumes:
-  postgres_data:
-  static_volume:
-  media_volume:
-  certs:
-  html:
-  vhost:
-  acme:
