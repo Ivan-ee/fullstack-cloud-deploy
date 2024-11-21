@@ -1,8 +1,8 @@
 version: '3'
 
-volumes:
-  prometheus-data: { }
-  grafana-data: { }
+#volumes:
+#  prometheus-data: { }
+#  grafana-data: { }
 
 
 services:
