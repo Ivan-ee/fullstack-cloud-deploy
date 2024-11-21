@@ -4,6 +4,7 @@ volumes:
   prometheus-data: {}
   grafana-data: {}
 
+
 services:
   web:
     image: "ivanee/flask-app:latest"
