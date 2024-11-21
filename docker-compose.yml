@@ -1,9 +1,8 @@
 version: '3'
 
-#volumes:
-#  prometheus-data: { }
-#  grafana-data: { }
-
+volumes:
+  prometheus-data: { }
+  grafana-data: { }
 
 services:
   web:
@@ -52,39 +51,40 @@ services:
       - /var/docker/nginx/vhost:/etc/nginx/vhost.d
     environment:
       DEFAULT_EMAIL: smirnowwwivan@mail.ru
+      NGINX_PROXY_CONTAINER: nginx
 
-#  prometheus:
-#    image: prom/prometheus:latest
-#    container_name: prometheus
-#    ports:
-#      - '9090:9090'
-#    restart: unless-stopped
-#    volumes:
-#      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-#      - prometheus-data:/prometheus
-#    command:
-#      - '--web.enable-lifecycle'
-#      - '--config.file=/etc/prometheus/prometheus.yml'
-#
-#  grafana:
-#    image: grafana/grafana:latest
-#    container_name: grafana
-#    ports:
-#      - '3000:3000'
-#    restart: unless-stopped
-#    volumes:
-#      - grafana-data:/var/lib/grafana
-#
-#  node_exporter:
-#    image: quay.io/prometheus/node-exporter:latest
-#    container_name: node_exporter
-#    command:
-#      - '--path.rootfs=/host'
-#    network_mode: host
-#    pid: host
-#    restart: unless-stopped
-#    volumes:
-#      - '/:/host:ro,rslave'
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheu
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
 
   db:
     image: postgres:16-alpine
