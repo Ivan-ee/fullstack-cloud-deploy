@@ -55,7 +55,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheu
+    container_name: prometheus
     ports:
       - '9090:9090'
     restart: unless-stopped
@@ -65,6 +65,9 @@ services:
     command:
       - '--web.enable-lifecycle'
       - '--config.file=/etc/prometheus/prometheus.yml'
+    environment:
+      - VIRTUAL_HOST=prometheus.smirnowwwivan.ru
+      - LETSENCRYPT_HOST=prometheus.smirnowwwivan.ru
 
   grafana:
     image: grafana/grafana:latest
@@ -74,6 +77,9 @@ services:
     restart: unless-stopped
     volumes:
       - grafana-data:/var/lib/grafana
+    environment:
+      - VIRTUAL_HOST=grafana.smirnowwwivan.ru
+      - LETSENCRYPT_HOST=grafana.smirnowwwivan.ru
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
