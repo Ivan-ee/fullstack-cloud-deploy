@@ -121,8 +121,11 @@ services:
     container_name: elasticsearch
     restart: always
     volumes:
+      - ./configs/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - elastic_data:/usr/share/elasticsearch/data/
     environment:
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       discovery.type: single-node
     ports:
       - '9200:9200'
@@ -132,6 +135,7 @@ services:
     container_name: logstash
     restart: always
     volumes:
+      - ./configs/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/:/logstash_dir
     command: logstash -f /logstash_dir/logstash.conf
     depends_on:
@@ -145,6 +149,8 @@ services:
     restart: always
     ports:
       - '5601:5601'
+    volumes:
+      - ./configs/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
     environment:
       - VIRTUAL_HOST=kibana.smirnowwwivan.ru
       - LETSENCRYPT_HOST=kibana.smirnowwwivan.ru
