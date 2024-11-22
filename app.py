@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from flask_caching import Cache
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from prometheus_flask_exporter import PrometheusMetrics
 
 from dotenv import load_dotenv
 
@@ -12,6 +13,8 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 app = Flask(__name__)
+
+metrics = PrometheusMetrics(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = \
     f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT', 5432)}/{os.getenv('POSTGRES_DB')}"
@@ -115,6 +118,11 @@ def clean_cache(id):
 def hello_world():
     app.logger.info('Главная страница.')
     return 'Hello, Docker!'
+
+
+@app.route('/health')
+def health_check():
+    return jsonify({'status': 'ok'}), 200
 
 
 if __name__ == '__main__':

@@ -6,3 +6,4 @@ flask_caching
 Flask-Migrate
 redis
 psycopg2-binary
+prometheus-flask-exporter

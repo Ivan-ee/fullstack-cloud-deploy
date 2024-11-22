@@ -48,5 +48,5 @@ jobs:
             git pull
             docker compose stop
             docker system prune -a
-            docker-compose up -d
+            docker compose up -d
 #            docker-compose up -d --build web
