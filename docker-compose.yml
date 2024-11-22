@@ -123,7 +123,8 @@ services:
     volumes:
       - elastic_data:/usr/share/elasticsearch/data/
     environment:
-      discovery.type: single-node
+      - discovery.type=single-node
+      - xpack.security.enrollment.enabled=true
     ports:
       - '9200:9200'
 
