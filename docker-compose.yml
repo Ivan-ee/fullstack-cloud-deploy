@@ -3,7 +3,7 @@ version: '3'
 volumes:
   prometheus-data: { }
   grafana-data: { }
-  elastic_data: {}
+  elastic_data: { }
 
 services:
   web:
@@ -140,8 +140,6 @@ services:
       - Elasticsearch
     ports:
       - '9600:9600'
-    environment:
-      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
 
   Kibana:
     image: kibana:8.16.0
@@ -151,5 +149,7 @@ services:
       - '5601:5601'
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - VIRTUAL_HOST=kibana.smirnowwwivan.ru
+      - LETSENCRYPT_HOST=kibana.smirnowwwivan.ru
     depends_on:
       - Elasticsearch
