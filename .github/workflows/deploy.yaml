@@ -46,4 +46,7 @@ jobs:
             cd fullstack-cloud-deploy
             docker-compose pull web
             git pull
-            docker-compose up -d --build web
+#            docker-compose up -d --build web
+            docker compose stop
+            docker system prune -a
+            docker-compose up -d
