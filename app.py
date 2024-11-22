@@ -14,8 +14,6 @@ if os.path.exists(dotenv_path):
 
 app = Flask(__name__)
 
-metrics = PrometheusMetrics(app)
-
 app.config["SQLALCHEMY_DATABASE_URI"] = \
     f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT', 5432)}/{os.getenv('POSTGRES_DB')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -30,6 +28,9 @@ cache = Cache(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+metrics = PrometheusMetrics(app)
+metrics.info("app_info", "App Info, this can be anything you want", version="1.0.0")
 
 
 class User(db.Model):
@@ -126,4 +127,4 @@ def health_check():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=False)
