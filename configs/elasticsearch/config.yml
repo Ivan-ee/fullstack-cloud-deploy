@@ -1,4 +1,0 @@
-network.host: 0.0.0.0
-
-xpack.security.enabled: true
-xpack.license.self_generated.type: basic
