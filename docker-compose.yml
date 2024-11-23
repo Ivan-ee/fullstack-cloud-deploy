@@ -117,7 +117,7 @@ services:
     restart: "always"
 
   elasticsearch:
-    image: elasticsearch:8.16.0
+    image: elasticsearch:7.9.3
     container_name: elasticsearch
     restart: always
     volumes:
@@ -129,7 +129,7 @@ services:
       - '9200:9200'
 
   logstash:
-    image: logstash:8.16.0
+    image: logstash:7.9.3
     container_name: logstash
     restart: always
     volumes:
@@ -140,7 +140,7 @@ services:
       - elasticsearch
 
   kibana:
-    image: kibana:8.16.0
+    image: kibana:7.9.3
     container_name: kibana
     restart: always
     ports:
