@@ -123,6 +123,8 @@ services:
     volumes:
       - elastic_data:/usr/share/elasticsearch/data/
     environment:
+      ELASTIC_PASSWORD: "1234567890"
+      ELASTIC_USERNAME: "user"
       discovery.type: single-node
     ports:
       - '9200:9200'
