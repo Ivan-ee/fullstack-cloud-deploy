@@ -16,7 +16,7 @@ if os.path.exists(dotenv_path):
 
 app = Flask(__name__)
 
-logstash_handler = SocketHandler('logstash', 5000)  # Host и порт Logstash
+logstash_handler = SocketHandler('logstash', 9600)
 logstash_handler.setLevel(logging.INFO)
 
 # Формат логов
@@ -130,7 +130,7 @@ def clean_cache(id):
 
 @app.route('/')
 def hello_world():
-    app.logger.info('Главная страница.')
+    app.logger.info('Main Page')
     return 'Hello, Docker!'
 
 
