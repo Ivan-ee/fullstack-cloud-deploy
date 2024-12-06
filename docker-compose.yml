@@ -22,8 +22,6 @@ services:
       - LETSENCRYPT_HOST=smirnowwwivan.ru
     env_file:
       - .env
-    deploy:
-      replicas: 3
     restart: "always"
 
   nginx:
