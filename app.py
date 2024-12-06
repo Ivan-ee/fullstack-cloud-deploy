@@ -19,11 +19,9 @@ app = Flask(__name__)
 logstash_handler = SocketHandler('logstash', 9600)
 logstash_handler.setLevel(logging.INFO)
 
-# Формат логов
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logstash_handler.setFormatter(formatter)
 
-# Добавление логгера
 app.logger.addHandler(logstash_handler)
 app.logger.setLevel(logging.INFO)
 
