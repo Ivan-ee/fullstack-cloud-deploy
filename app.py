@@ -129,7 +129,7 @@ def clean_cache(id):
 @app.route('/')
 def hello_world():
     app.logger.info('Main Page')
-    return 'Hello, Docker!2'
+    return 'Hello, Docker!'
 
 
 @app.route('/health')
