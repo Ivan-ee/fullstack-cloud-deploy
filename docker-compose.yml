@@ -38,6 +38,7 @@ services:
       - /var/docker/nginx/html:/usr/share/nginx/html
       - /var/docker/nginx/certs:/etc/nginx/certs
       - /var/docker/nginx/vhost:/etc/nginx/vhost.d
+      - ./nginx_logs:/var/log/nginx
 
   letsencrypt-companion:
     container_name: letsencrypt-companion
@@ -136,6 +137,7 @@ services:
     restart: always
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./nginx_logs:/var/log/nginx
     ports:
       - '9600:9600'
     depends_on:

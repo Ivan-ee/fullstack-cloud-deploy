@@ -1,6 +1,8 @@
+import logging
 import os
 
 from flask import Flask, request, jsonify
+from logging.handlers import SocketHandler
 from flask_caching import Cache
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -13,6 +15,17 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 app = Flask(__name__)
+
+logstash_handler = SocketHandler('logstash', 5000)  # Host и порт Logstash
+logstash_handler.setLevel(logging.INFO)
+
+# Формат логов
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logstash_handler.setFormatter(formatter)
+
+# Добавление логгера
+app.logger.addHandler(logstash_handler)
+app.logger.setLevel(logging.INFO)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = \
     f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT', 5432)}/{os.getenv('POSTGRES_DB')}"
